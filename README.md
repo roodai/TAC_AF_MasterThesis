@@ -18,9 +18,14 @@ Alternatively the ColabFold suite can be used to make predictions with essential
 
 ColabFold https://github.com/sokrypton/ColabFold
 
-Input and output differ based on what method is used. The primary sequences used to make predictions are included in the sequences folder.  In these analyses the .pdb files and a file containing pTM+ipTM scores are necessary, these are included in the results folder.
+Input and output differ based on what method is used. The primary sequences used to make predictions are included in the sequences folder. In these analyses the ranked .pdb files and a file containing pTM+ipTM scores are necessary, these are included in the results folder.
 
 Regardless of method, AlphaFold2 runs are heavily seeded, reproductions from these sequences will produce somewhat different results than the ones included in this repository.
+
+#### Quality metrics
+
+The pTM+ipTM scores are
+
 
 #### PyMol
 PyMol is used to visualize, align and determine sequences and interfaces. Files of interest are loaded into the PyMol session. Commands are executed line by line in PyMols own terminal. Chains, with interfaces of interest are selected by selection commands. For MT16 2A4C, all results are loaded and the interfaces of antitoxins to chaperones are of interest. The interfaces are determined with the "within" command.
@@ -33,18 +38,18 @@ sele ifs, as within 3.5 of cs
 
 Sequences of interest are found and selected
 
-````code
-import findseq
+````
+run https://raw.githubusercontent.com/Pymol-Scripts/Pymol-script-repo/master/findseq.py
 findseq NLNDEMTSDGNYLLLP, all, chad
 ````
 It is then determined if the found sequences are interfacing
 
-```code
+```
 create top_c, cs and ranked_0
 create if_chad, chad and ifs
 create non_if_chad, chad and not ifs
 ```
-All the objects in the session are aligned. The interface selections are copied unto objects. Depictions and colors are chosen.
+All the objects in the session are aligned. Depictions and colors are chosen.
 
 ````
 align ranked_0, all
@@ -65,4 +70,9 @@ png all_chad
 disable non_if_chad
 ray 2400,2400
 png if_chad
+````
+Coloring by plDDT is done with the gradient command, plDDT scores are in the b-factor column and is used to color the .pdb files
+
+````
+spectrum b, red_yellow_cyan_blue
 ````
